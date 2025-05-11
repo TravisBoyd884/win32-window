@@ -1,15 +1,28 @@
-cmake_minimum_required(VERSION 3.10)
+cmake_minimum_required(VERSION 3.22)
 
-project(Tutorial VERSION 1.0)
+project(game
+  VERSION "0.0.1"
+  DESCRIPTION "A game about Karnaugh Maps"
+  LANGUAGES C CXX
+)
 
-
-set(CMAKE_CXX_STANDARD 11)
-set(CMAKE_CXX_STANDARD_REQUIRED TRUE)
+set(CMAKE_CXX_STANDARD 23)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_EXPORT_COMPILE_COMMANDS TRUE)
 
-add_executable(game src/main.cxx)
+# Compiler settings based on platform
+if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
+  # Windows-specific settings (MinGW)
+  # Compiler is set in toolchain file
+else()
+  # Linux-specific settings
+  set(CMAKE_CXX_COMPILER clang++)
+endif()
 
-target_include_directories(game 
-  "${CMAKE_SOURCE_DIR}/include" 
-  "${CMAKE_SOURCE_DIR}/src"}
+add_executable(game src/main.cxx)
+target_link_libraries(${PROJECT_NAME} PRIVATE "-lstdc++exp")
+
+target_include_directories(game PRIVATE
+  "${CMAKE_SOURCE_DIR}/include"
+  "${CMAKE_SOURCE_DIR}/src")
 
