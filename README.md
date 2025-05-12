@@ -2,6 +2,14 @@
 
 A game that helps you practice using [Karnaugh maps](https://en.wikipedia.org/wiki/Karnaugh_map).
 
+## Dependencies
+
+- CMake (version 3.22 or higher)
+- C++ compiler with C++23 support
+  - Linux: Clang++ (recommended)
+  - Windows: MinGW-w64 for windows compilation
+- C++ standard library with experimental support (`libstdc++exp`)
+
 ## Build Instructions
 
 ### Linux
