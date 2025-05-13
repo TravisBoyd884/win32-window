@@ -1,6 +1,6 @@
-# Karnaugh Maps
+# cross-compilation
 
-A game that helps you practice using [Karnaugh maps](https://en.wikipedia.org/wiki/Karnaugh_map).
+My template for cross compiling C++ projects
 
 ## Dependencies
 

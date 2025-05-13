@@ -1,0 +1,8 @@
+[
+{
+  "directory": "/home/travis/Projects/karnaugh-maps/windows-build",
+  "command": "/usr/bin/x86_64-w64-mingw32-g++  @CMakeFiles/game.dir/includes_CXX.rsp -std=gnu++23 -o CMakeFiles/game.dir/src/main.cxx.obj -c /home/travis/Projects/karnaugh-maps/src/main.cxx",
+  "file": "/home/travis/Projects/karnaugh-maps/src/main.cxx",
+  "output": "CMakeFiles/game.dir/src/main.cxx.obj"
+}
+]
