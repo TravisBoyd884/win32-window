@@ -19,8 +19,10 @@ else()
   set(CMAKE_CXX_COMPILER clang++)
 endif()
 
-add_executable(game src/main.cxx)
+add_executable(game WIN32 src/main.cxx src/custom_window.cpp)
 target_link_libraries(${PROJECT_NAME} PRIVATE "-lstdc++exp")
+
+target_compile_definitions(game PUBLIC -DNOMINMAX)  # -D removed
 
 target_include_directories(game PRIVATE
   "${CMAKE_SOURCE_DIR}/include"

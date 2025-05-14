@@ -1,41 +1,15 @@
 #include "custom_window.h"
 #include <cstdint>
+#include <libloaderapi.h>
 #include <stdexcept>
 #include <windows.h>
 
-LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam,
-                            LPARAM lParam) {
-  switch (uMsg) {
-  case WM_ERASEBKGND: {
-    HDC hdc = (HDC)wParam;
-    RECT rect;
-    GetClientRect(hwnd, &rect);
-
-    // Create a solid brush with the desired color (e.g., blue)
-    HBRUSH hBrush = CreateSolidBrush(RGB(0, 0, 255));
-
-    // Fill the background with the brush
-    FillRect(hdc, &rect, hBrush);
-
-    // Clean up the brush
-    DeleteObject(hBrush);
-
-    // Return 1 to indicate that the background has been erased
-    return 1;
-  }
-  // ... other message handling ...
-  default:
-    return DefWindowProc(hwnd, uMsg, wParam, lParam);
-  }
-}
-
-void CoolWindow(std::uint32_t width, std::uint32_t height) {
-  HWND window_;
-  WNDCLASSA wc_;
+namespace custom_window {
+CustomWindow::CustomWindow(std::uint32_t width, std::uint32_t height) {
 
   wc_ = {};
 
-  wc_.lpfnWndProc = WindowProc;
+  wc_.lpfnWndProc = DefWindowProcA;
   wc_.hInstance = GetModuleHandleA(nullptr);
   wc_.lpszClassName = "mainwindow";
   wc_.style = CS_HREDRAW | CS_VREDRAW | CS_OWNDC;
@@ -73,10 +47,4 @@ void CoolWindow(std::uint32_t width, std::uint32_t height) {
   UpdateWindow(window_);
 }
 
-int main(int argc, char *argv[]) {
-  CoolWindow(1920u, 1080u);
-  for (;;) {
-  }
-
-  return 0;
-}
+} // namespace custom_window
