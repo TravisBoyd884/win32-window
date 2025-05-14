@@ -1,27 +1,19 @@
-# cross-compilation
+# win32 window
 
-My template for cross compiling C++ projects
+Created a blue window using the WIN32 API. You can either use
+the CoolWindow function or create a custom_window object defined
+in the custom_window.h file. I don't know what the benefit of creating a window class is, but I'm sure I'll find out later once I have to use this fucking thing.
 
 ## Dependencies
 
 - CMake (version 3.22 or higher)
-- C++ compiler with C++23 support
-  - Linux: Clang++ (recommended)
-  - Windows: MinGW-w64 for windows compilation
-- C++ standard library with experimental support (`libstdc++exp`)
+- Windows: MinGW-w64 for windows compilation
 
-## Build Instructions
-
-### Linux
-
-`mkdir -p build &&
-cd build &&
-cmake .. &&
-cmake --build .`
-
-### Windows
+### Build instructions for linux users
 
 `mkdir -p build &&
 cd build &&
 cmake -DCMAKE_TOOLCHAIN_FILE=../toolchain-mingw64.cmake .. &&
 cmake --build .`
+
+Should just build on window idk... I'm on arch btw
