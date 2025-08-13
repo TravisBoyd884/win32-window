@@ -15,5 +15,3 @@ in the custom_window.h file. I don't know what the benefit of creating a window 
 cd build &&
 cmake -DCMAKE_TOOLCHAIN_FILE=../toolchain-mingw64.cmake .. &&
 cmake --build .`
-
-Should just build on window idk... I'm on arch btw
