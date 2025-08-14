@@ -1,19 +1,25 @@
-#include "custom_window.h"
+#include "window.h"
 #include <cstdint>
+#include <iostream>
 #include <libloaderapi.h>
+#include <minwindef.h>
+#include <print>
 #include <stdexcept>
 #include <windows.h>
 
-LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam,
-                            LPARAM lParam) {
+void Window::setRunning(bool running) { m_running = running; }
+
+LRESULT Window::HandleMessage(HWND hwnd, UINT uMsg, WPARAM wParam,
+                              LPARAM lParam) {
   switch (uMsg) {
+
   case WM_ERASEBKGND: {
     HDC hdc = (HDC)wParam;
     RECT rect;
     GetClientRect(hwnd, &rect);
 
     // Create a solid brush with the desired color (e.g., blue)
-    HBRUSH hBrush = CreateSolidBrush(RGB(0, 0, 255));
+    HBRUSH hBrush = CreateSolidBrush(RGB(255, 0, 0));
 
     // Fill the background with the brush
     FillRect(hdc, &rect, hBrush);
@@ -24,14 +30,39 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam,
     // Return 1 to indicate that the background has been erased
     return 1;
   }
-  // ... other message handling ...
+  case WM_CLOSE: {
+    std::cout << "key down" << std::endl;
+    setRunning(false);
+  }
+  case WM_KEYDOWN: {
+    std::cout << "key down" << std::endl;
+  }
+
   default:
     return DefWindowProc(hwnd, uMsg, wParam, lParam);
   }
+
+  return DefWindowProc(hwnd, uMsg, wParam, lParam);
 }
 
-namespace custom_window {
-CustomWindow::CustomWindow(std::uint32_t width, std::uint32_t height) {
+LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam,
+                            LPARAM lParam) {
+  Window *self = nullptr;
+  if (uMsg == WM_NCCREATE) {
+    CREATESTRUCT *cs = reinterpret_cast<CREATESTRUCT *>(lParam);
+    self = reinterpret_cast<Window *>(cs->lpCreateParams);
+    SetWindowLongPtr(hwnd, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(self));
+  } else {
+    self = reinterpret_cast<Window *>(GetWindowLongPtr(hwnd, GWLP_USERDATA));
+  }
+
+  if (self)
+    return self->HandleMessage(hwnd, uMsg, wParam, lParam);
+
+  return DefWindowProc(hwnd, uMsg, wParam, lParam);
+}
+
+Window::Window(std::uint32_t width, std::uint32_t height) {
 
   HWND window_;
   WNDCLASSA wc_;
@@ -70,10 +101,22 @@ CustomWindow::CustomWindow(std::uint32_t width, std::uint32_t height) {
                             NULL,          // Parent window
                             NULL,          // Menu
                             wc_.hInstance, // Instance handle
-                            NULL           // Additional application data
+                            this           // Additional application data
   );
   ShowWindow(window_, SW_SHOW);
   UpdateWindow(window_);
 }
 
-} // namespace custom_window
+bool Window::getRunning() {
+  MessagePump();
+  return m_running;
+}
+
+void Window::MessagePump() {
+  auto message = ::MSG{};
+  while (::PeekMessageA(&message, nullptr, 0, 0, PM_REMOVE) != 0) {
+    ::TranslateMessage(&message);
+    ::DispatchMessageA(&message);
+    std::cout << ::TranslateMessage(&message) << std::endl;
+  }
+}

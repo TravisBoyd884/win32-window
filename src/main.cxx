@@ -1,9 +1,12 @@
-#include "custom_window.h"
+#include "window.h"
+#include <iostream>
 #include <windows.h>
 
 int main(int argc, char *argv[]) {
-  custom_window::CustomWindow(800u, 600u);
-  for (;;) {
+  std::cout << "Hello from hybrid app!" << std::endl;
+  Window w(800u, 600u);
+
+  while (w.getRunning()) {
   }
 
   return 0;
